@@ -138,7 +138,8 @@ class EnhancedCameraYOLO:
             if not os.path.exists(model_path):
                 print(f"  📥 Downloading {model_path}...")
             
-            # Load model
+            # Load model - REMOVED torch.serialization.add_safe_globals
+            # This is not needed and causes errors with older PyTorch versions
             self.model = YOLO(model_path)
             self.model.to('cpu')  # Force CPU on Raspberry Pi
             
@@ -152,6 +153,7 @@ class EnhancedCameraYOLO:
             
         except Exception as e:
             print(f"  ❌ YOLO loading failed: {e}")
+            print(f"  💡 Error details: {type(e).__name__}")
             self.model_loaded = False
     
     def _capture_frames(self):
